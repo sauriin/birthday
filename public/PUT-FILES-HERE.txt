@@ -1,0 +1,26 @@
+Drop files in this folder — they get served from the site root.
+
+0) THE FILM  (this is the hero — the first thing she sees)
+   Save your birthday video here as:  birthday.mp4
+   (exactly that name — or any name, then set VIDEO.src in
+   src/birthday.config.js, e.g.  src: "/her-film.mp4")
+
+   mp4 (H.264) is the safest format for phones and browsers.
+   Keep it under ~50MB so it loads fast.
+   Optional: a cover frame before she presses play —
+   save it as  frame.jpg  and set  poster: "/frame.jpg"
+
+   Until the file is there, the hero shows a "film not loaded" card
+   with instructions (so you can still see the rest of the book).
+
+1) THE THEME SONG
+   Save the Friends theme song as:  theme-song.mp3
+   (exactly that name). The ♪ button on the letter page will play it.
+   Without the file, the button plays four claps instead.
+
+2) HER PHOTOS
+   Save the images here, then list them in src/birthday.config.js:
+
+     export const PHOTOS = ["/her1.jpg", "/her2.jpg", "/her3.jpg"];
+
+   Any image format works (jpg, png, webp).

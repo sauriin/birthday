@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-hand: "Caveat", "Bradley Hand", cursive;
+  --font-body: "Lora", Georgia, serif;
+  --font-title: "Playfair Display", Georgia, serif;
+  --font-logo: "Cabin Sketch", "Comic Sans MS", cursive;
+  --color-paper: #f7f0e1;
+  --color-cream: #efe3cd;
+  --color-kraft: #c8a97e;
+  --color-ink: #2f2b28;
+  --color-blueink: #2f4f8a;
+  --color-rose: #b8556a;
+  --color-sage: #dfe6d3;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background: #1c1712;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+}
+
+/* ---------- surfaces ---------- */
+.paper {
+  background-color: var(--color-paper);
+  background-image:
+    radial-gradient(circle at 20% 15%, rgba(160, 130, 80, 0.07), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(160, 130, 80, 0.08), transparent 50%),
+    radial-gradient(circle, rgba(120, 95, 60, 0.05) 0.7px, transparent 1px);
+  background-size: auto, auto, 4px 4px;
+}
+
+/* ---------- washi tape ---------- */
+.tape {
+  position: absolute;
+  width: 76px;
+  height: 22px;
+  background: rgba(255, 236, 176, 0.62);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+  border-left: 1px dashed rgba(255, 255, 255, 0.5);
+  border-right: 1px dashed rgba(255, 255, 255, 0.5);
+  pointer-events: none;
+}
+.tape.rose { background: rgba(226, 158, 168, 0.6); }
+.tape.sage { background: rgba(186, 205, 170, 0.62); }
+
+/* ---------- little bits ---------- */
+.hand { font-family: var(--font-hand); }
+.title { font-family: var(--font-title); }
+
+.press {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.press:active {
+  transform: translateY(2px);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@keyframes sway {
+  from { transform: rotate(-3deg); }
+  to { transform: rotate(3deg); }
+}
+.sway { animation: sway 4s ease-in-out infinite alternate; transform-origin: top center; }
+
+
