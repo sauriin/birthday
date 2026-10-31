@@ -1,1 +1,5 @@
-dist/birthday.mp4
+node_modules/
+dist/
+.env
+.env.local
+public/birthday.mp4
