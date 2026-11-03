@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { HER_NAME, INTRO, VIDEO } from "./birthday.config";
+import { HER_NAME, INTRO, UNLOCK_AT, VIDEO } from "./birthday.config";
 
 /* ================= soft projector click ================= */
 let audioCtx = null;
@@ -25,6 +25,97 @@ function tick(freq = 520) {
 function fmt(s) {
   if (!isFinite(s) || s < 0) return "0:00";
   return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+}
+
+/* ================= the countdown ================= */
+const TARGET = new Date(UNLOCK_AT).getTime();
+
+function diff(target) {
+  const ms = target - Date.now();
+  if (!isFinite(ms) || ms <= 0) return { done: true, d: 0, h: 0, m: 0, s: 0 };
+  const total = Math.floor(ms / 1000);
+  return {
+    done: false,
+    d: Math.floor(total / 86400),
+    h: Math.floor((total % 86400) / 3600),
+    m: Math.floor((total % 3600) / 60),
+    s: total % 60,
+  };
+}
+
+function useCountdown(target) {
+  const [left, setLeft] = useState(() => diff(target));
+  useEffect(() => {
+    const id = setInterval(() => setLeft(diff(target)), 1000);
+    return () => clearInterval(id);
+  }, [target]);
+  return left;
+}
+
+function Unit({ value, label }) {
+  return (
+    <div className="flex flex-col items-center">
+      <div className="paper flex h-[clamp(62px,17vw,104px)] w-[clamp(62px,17vw,104px)] items-center justify-center rounded-sm border border-[#2f2b28]/20 shadow-[0_14px_34px_rgba(0,0,0,0.55)]">
+        <span className="title text-[clamp(26px,7.5vw,44px)] font-black leading-none tabular-nums text-[#2f2b28]">
+          {String(value).padStart(2, "0")}
+        </span>
+      </div>
+      <span className="mt-2 text-[9px] uppercase tracking-[0.3em] text-[#f3e6c9]/60">{label}</span>
+    </div>
+  );
+}
+
+function Countdown({ left }) {
+  const when = new Date(UNLOCK_AT);
+  const dateLabel = isFinite(when.getTime())
+    ? new Intl.DateTimeFormat(undefined, { day: "numeric", month: "long", year: "numeric" }).format(when)
+    : `${UNLOCK_AT}`;
+
+  return (
+    <main className="relative min-h-[100dvh] w-full overflow-y-auto no-scrollbar bg-[#0b0908] font-body">
+      <div
+        className="pointer-events-none fixed inset-0"
+        style={{ background: "radial-gradient(ellipse at 50% 38%, #23304a 0%, #141a26 45%, #0a0a0c 100%)" }}
+      />
+
+      <div className="relative flex min-h-[100dvh] flex-col items-center justify-center px-4 py-10 sm:px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="w-full max-w-[620px] text-center"
+        >
+          <p className="text-[11px] uppercase tracking-[0.5em] text-[#f3e6c9]/70">the premiere of</p>
+          <h1 className="title mt-3 text-[clamp(2.3rem,9vw,4.2rem)] font-black leading-none text-[#f7f0e1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.65)]">
+            {HER_NAME}
+          </h1>
+          <p className="hand mt-2 text-[clamp(21px,4vw,29px)] leading-tight text-[#f2c230]">
+            starts in a moment — well, in this many
+          </p>
+
+          <div className="mt-8 flex items-start justify-center gap-[clamp(6px,2.4vw,16px)]">
+            <Unit value={left.d} label="days" />
+            <Unit value={left.h} label="hours" />
+            <Unit value={left.m} label="minutes" />
+            <Unit value={left.s} label="seconds" />
+          </div>
+
+          <div className="mt-8 inline-block border border-[#f2c230]/40 bg-black/30 px-4 py-2">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-[#f3e6c9]/80">
+              opening {dateLabel} · midnight
+            </p>
+          </div>
+
+          <p className="mt-9 hand text-[clamp(21px,4vw,27px)] text-[#f3e6c9]">
+            no peeking till then ♥
+          </p>
+          <p className="mt-2 text-[9px] uppercase tracking-[0.28em] text-[#f3e6c9]/45">
+            one copy only · no reprints · be early
+          </p>
+        </motion.div>
+      </div>
+    </main>
+  );
 }
 
 /* ================= the movie-ad intro ================= */
@@ -401,7 +492,9 @@ function Screen() {
 /* ================= the ad, then the film ================= */
 export default function App() {
   const [phase, setPhase] = useState("intro");
+  const left = useCountdown(TARGET);
 
+  if (!left.done) return <Countdown left={left} />;
   if (phase === "intro") return <Intro onDone={() => setPhase("film")} />;
   return <Screen />;
 }

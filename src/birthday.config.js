@@ -4,6 +4,11 @@
 export const HER_NAME = "Anjali"; // 👈 her name
 export const YOUR_NAME = "Pa rum pum pum pum"; // 👈 your signature
 
+/* When the site opens. Until then visitors only see a countdown.
+   Format: year-month-dayThour:minute:second — in the visitor's local time.
+   👉 19 November 2026, midnight  */
+export const UNLOCK_AT = "2026-11-19T00:00:00";
+
 export const PHOTOS = [
   // How to add her pics:
   //   1) Drop the image file into the "public" folder of this project
