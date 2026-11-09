@@ -4,7 +4,11 @@
 export const HER_NAME = "Anjali"; // 👈 her name
 export const YOUR_NAME = "Pa rum pum pum pum"; // 👈 your signature
 
-/* When the site opens. Until then visitors only see a countdown.
+/* The countdown gate. Set to true to hide the site behind the timer,
+   false to show the film straight away. 👉 currently off  */
+export const COUNTDOWN_ENABLED = false;
+
+/* When the gate opens. Until then visitors only see a countdown.
    Format: year-month-dayThour:minute:second — in the visitor's local time.
    👉 19 November 2026, midnight  */
 export const UNLOCK_AT = "2026-11-19T00:00:00";
@@ -142,6 +146,45 @@ export const CLOSING = {
   head: "that's the book.",
   body: "Everything in it was a joke except the last page, which was completely serious. Happy birthday — eat the prawns, finish the series, sleep sometimes, and call me when the shift ends.",
   meta: "bound by hand · one copy only · no reprints",
+};
+
+/* ============================================================
+   THE TEASE — the fake GTA 6 release screen that opens the site.
+   It plays it completely straight, then admits the truth, then
+   hands over to the intro. Set enabled: false to skip it.
+============================================================ */
+export const GTA = {
+  enabled: true,
+
+  /* card 1 — the boot screen */
+  studio: "rockstar north (allegedly)",
+  bootLine: "loading the most anticipated release of the decade",
+  bootNote: "please do not turn off your console",
+
+  /* card 2 — the "trailer" (the real one, straight off Rockstar's channel)
+     youtubeId — official GTA VI videos:
+       "QdBZY2fkU-0" trailer 1 · "VQRLujxTm3c" trailer 2 · "rz1B4B2yBZY" launch trailer
+     poster   — the still shown under/behind the player (swap it with the same id) */
+  premiere: "grand theft auto vi · trailer one",
+  titleTop: "GRAND THEFT AUTO",
+  vi: "VI",
+  youtubeId: "QdBZY2fkU-0",
+  poster: "https://i.ytimg.com/vi/QdBZY2fkU-0/maxresdefault.jpg",
+  trailerCaption: "vice city · state of leonida · coming 2026",
+  timecode: "00:07 / 01:31",
+  muteNote: "sound off · act normal",
+
+  /* card 3 — the glitch: the wrong video was in the projector all along */
+  glitchTop: "SIGNAL LOST",
+  glitchMid: "wrong file playing",
+  glitchLines: [
+    "playing: gta6_trailer_01_final_FINAL.mp4",
+    "error 404: birthday.mp4 not found",
+    "this is somebody else's premiere",
+  ],
+  glitchFix: "recovering the right file…",
+
+  skip: "skip the hype",
 };
 
 /* ---- per-visit shuffle (do not edit below this line) ---- */

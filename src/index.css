@@ -22,6 +22,20 @@ body {
   background: #1c1712;
   font-family: var(--font-body);
   color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+/* the picture keeps clear of notches and home bars */
+.safe-top { top: max(0.75rem, env(safe-area-inset-top)); }
+.safe-bottom { padding-bottom: max(0.6rem, env(safe-area-inset-bottom)); }
+
+/* a 16:9 stage never grows taller than the screen, even on a phone on its side */
+.stage-16x9 { aspect-ratio: 16 / 9; max-height: 94dvh; }
+
+@media (max-height: 520px) {
+  .short-hide { display: none !important; }
 }
 
 /* ---------- surfaces ---------- */
@@ -67,5 +81,85 @@ body {
   to { transform: rotate(3deg); }
 }
 .sway { animation: sway 4s ease-in-out infinite alternate; transform-origin: top center; }
+
+/* ---------- gta trailer: scanlines, glitch, wrong file ---------- */
+.scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45) 0px,
+    rgba(0, 0, 0, 0.45) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.glitch-slice {
+  position: absolute;
+  inset: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  object-fit: cover;
+}
+.glitch-base {
+  filter: saturate(1.2) contrast(1.15) brightness(0.5);
+}
+.glitch-red {
+  filter: sepia(1) saturate(9) hue-rotate(-35deg) brightness(1.15);
+  mix-blend-mode: screen;
+  animation: glitch-shift-a 0.42s steps(2, end) infinite;
+}
+.glitch-cyan {
+  filter: sepia(1) saturate(9) hue-rotate(155deg) brightness(1.15);
+  mix-blend-mode: screen;
+  animation: glitch-shift-b 0.36s steps(2, end) infinite;
+}
+@keyframes glitch-shift-a {
+  0%   { transform: translate3d(-7px, 2px, 0); clip-path: inset(4% 0 66% 0); }
+  25%  { transform: translate3d(9px, -4px, 0); clip-path: inset(38% 0 22% 0); }
+  50%  { transform: translate3d(-11px, 1px, 0); clip-path: inset(62% 0 12% 0); }
+  75%  { transform: translate3d(5px, 3px, 0); clip-path: inset(14% 0 48% 0); }
+  100% { transform: translate3d(-4px, -2px, 0); clip-path: inset(72% 0 6% 0); }
+}
+@keyframes glitch-shift-b {
+  0%   { transform: translate3d(8px, -3px, 0); clip-path: inset(70% 0 8% 0); }
+  25%  { transform: translate3d(-9px, 2px, 0); clip-path: inset(10% 0 58% 0); }
+  50%  { transform: translate3d(6px, 4px, 0); clip-path: inset(46% 0 30% 0); }
+  75%  { transform: translate3d(-5px, -3px, 0); clip-path: inset(26% 0 44% 0); }
+  100% { transform: translate3d(7px, 1px, 0); clip-path: inset(56% 0 18% 0); }
+}
+
+.glitch-tear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.85);
+  mix-blend-mode: overlay;
+  opacity: 0;
+  animation: tear 0.9s steps(1, end) infinite;
+}
+.glitch-tear.t1 { top: 16%; animation-delay: 0.05s; }
+.glitch-tear.t2 { top: 52%; animation-delay: 0.34s; }
+.glitch-tear.t3 { top: 78%; animation-delay: 0.62s; }
+@keyframes tear {
+  0%   { opacity: 0; transform: translateY(0) scaleY(1); }
+  8%   { opacity: 0.95; transform: translateY(-44px) scaleY(2.4); }
+  16%  { opacity: 0; }
+  48%  { opacity: 0; transform: translateY(0); }
+  56%  { opacity: 0.85; transform: translateY(88px) scaleY(1.8); }
+  64%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.glitch-text {
+  animation: jitter 0.18s steps(2, end) infinite;
+  text-shadow: 3px 0 #ff2d55, -3px 0 #00e5ff, 0 0 34px rgba(255, 45, 85, 0.5);
+}
+@keyframes jitter {
+  0%   { transform: translate(0, 0); }
+  30%  { transform: translate(-3px, 1px); }
+  60%  { transform: translate(2px, -1px); }
+  100% { transform: translate(0, 0); }
+}
 
 
